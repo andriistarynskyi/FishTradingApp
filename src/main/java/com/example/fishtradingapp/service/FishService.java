@@ -3,20 +3,19 @@ package com.example.fishtradingapp.service;
 import com.example.fishtradingapp.entity.Fish;
 import com.example.fishtradingapp.exception.ResourceNotFoundException;
 import com.example.fishtradingapp.repository.IFishRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
+@AllArgsConstructor
 @Service
 public class FishService implements IFishService {
     private IFishRepository fishRepository;
-
-    public FishService(IFishRepository fishRepository) {
-        this.fishRepository = fishRepository;
-    }
 
     @Override
     public List<Fish> findAll() {
