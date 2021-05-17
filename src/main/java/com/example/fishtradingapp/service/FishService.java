@@ -5,6 +5,7 @@ import com.example.fishtradingapp.exception.ResourceNotFoundException;
 import com.example.fishtradingapp.repository.IFishRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,7 +16,8 @@ import java.util.Map;
 @AllArgsConstructor
 @Service
 public class FishService implements IFishService {
-    private IFishRepository fishRepository;
+    private final IFishRepository fishRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<Fish> findAll() {

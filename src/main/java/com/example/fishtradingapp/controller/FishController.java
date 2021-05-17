@@ -25,7 +25,7 @@ public class FishController {
             log.info("Fish controller uses fishService.findAll()");
             return new ResponseEntity<>(fishService.findAll(), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            log.error("Fish controller is not able to get list of fish.");
+            log.error("Fish controller is not able to get list of fish.", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -47,7 +47,7 @@ public class FishController {
             log.info("Fish with id " + id + " was found successfully.");
             return new ResponseEntity<>(fishService.updateFish(id, fishDetails), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            log.error("Fish with id " + id + " does not exist.", e);
+            log.error("Fish with id " + id + " does not exist.");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

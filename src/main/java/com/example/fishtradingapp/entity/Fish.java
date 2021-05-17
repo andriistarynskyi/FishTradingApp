@@ -1,12 +1,12 @@
 package com.example.fishtradingapp.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Objects;
+import com.sun.istack.Nullable;
+import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
+@Data
 public class Fish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,89 +15,25 @@ public class Fish {
     private String shortDescription;
     private String description;
     private String imageUrl;
+    @Column(name = "purchased_price")
+    @Nullable
+    private double purchasedPrice;
     private double price;
 
     public Fish() {
     }
 
-    public Fish(String name, String shortDescription, String description, String imageUrl, double price) {
+    public Fish(String name,
+                String shortDescription,
+                String description,
+                String imageUrl,
+                double purchasedPrice,
+                double price) {
         this.name = name;
         this.shortDescription = shortDescription;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.purchasedPrice = purchasedPrice;
         this.price = price;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "Fish{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", price=" + price +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Fish fish = (Fish) o;
-        return id == fish.id && Double.compare(fish.price, price) == 0 && name.equals(fish.name) && shortDescription.equals(fish.shortDescription) && description.equals(fish.description) && imageUrl.equals(fish.imageUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, shortDescription, description, imageUrl, price);
     }
 }
