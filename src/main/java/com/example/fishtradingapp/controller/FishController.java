@@ -4,9 +4,9 @@ import com.example.fishtradingapp.entity.Fish;
 import com.example.fishtradingapp.entity.dto.FishDTO;
 import com.example.fishtradingapp.exception.ResourceNotFoundException;
 import com.example.fishtradingapp.service.IFishService;
-import com.example.fishtradingapp.service.IMapService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,72 +16,63 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/fish")
 @Slf4j
 @AllArgsConstructor
 public class FishController {
     private final IFishService fishService;
-    private final IMapService mapService;
+    private final ModelMapper modelMapper;
 
-    @GetMapping("/fish")
+    @GetMapping("/")
     public ResponseEntity<List<FishDTO>> getAllFish() {
         try {
-            log.info("Fish controller uses fishService.findAll()");
-            return new ResponseEntity<>(fishService.findAll()
+            List<FishDTO> fishDTOs = fishService.findAll()
                     .stream()
-                    .map(mapService::getFishDto)
-                    .collect(Collectors.toList()),
-                    HttpStatus.OK);
+                    .map(x -> modelMapper.map(x, FishDTO.class))
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(fishDTOs, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            log.error("Fish controller is not able to get list of fish.", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/fish")
+    @PostMapping("/")
     public ResponseEntity<Fish> addNewFish(@RequestBody FishDTO fishDto) {
         try {
-            Fish fish = mapService.getFish(fishDto);
+            Fish fish = modelMapper.map(fishDto, Fish.class);
             fishService.save(fish);
-            log.info("New fish was added to DB");
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            log.error("Fish entity cannot be saved");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/fish/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FishDTO> getFishById(@PathVariable int id) {
         try {
-            log.info("Fish with id " + id + " was found successfully.");
-            return new ResponseEntity<>(mapService.getFishDto(fishService.findById(id)), HttpStatus.OK);
+            Fish fish = fishService.findById(id);
+            return new ResponseEntity<>(modelMapper.map(fish, FishDTO.class), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            log.error("Fish with id " + id + " does not exist.", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/fish/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Fish> updateFish(@PathVariable int id, @RequestBody FishDTO fishDtoDetails) {
         try {
-            log.info("Fish with id " + id + " was found successfully.");
-            Fish fishDetails = mapService.getFish(fishDtoDetails);
-            return new ResponseEntity<>((Fish) fishService.updateFish(id, fishDetails), HttpStatus.OK);
+            Fish fishDetails = modelMapper.map(fishDtoDetails, Fish.class);
+            return new ResponseEntity<>(fishService.updateFish(id, fishDetails), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            log.error("Fish with id " + id + " does not exist.");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/fish/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteFish(@PathVariable int id) {
         try {
-            log.info("Fish with id " + id + " was deleted successfully");
             return new ResponseEntity<>(fishService.deleteFish(id), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            log.error("Fish with id " + id + " is not exist", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

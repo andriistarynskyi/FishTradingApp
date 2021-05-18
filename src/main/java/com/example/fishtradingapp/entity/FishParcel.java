@@ -1,9 +1,12 @@
 package com.example.fishtradingapp.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Data
 public class FishParcel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +23,7 @@ public class FishParcel {
     private Customer customer;
 
     private FishParcelStatus fishParcelStatus;
+
+    public FishParcel() {
+    }
 }

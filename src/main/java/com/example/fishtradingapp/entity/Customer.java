@@ -7,16 +7,29 @@ import javax.persistence.*;
 @Entity
 @Data
 public class Customer {
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) int id;
-    private int name;
-    @Column(name = "s_name")
-    private int sName;
+    private @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+    private String name;
+    @Column(name = "family_name")
+    private String familyName;
+    private String login;
+    private String password;
+    private String email;
 
     public Customer() {
     }
 
-    public Customer(int name, int sName) {
+    public Customer(int id, String name,
+                    String familyName,
+                    String login,
+                    String password,
+                    String email) {
+        this.id = id;
         this.name = name;
-        this.sName = sName;
+        this.familyName = familyName;
+        this.login = login;
+        this.password = password;
+        this.email = email;
     }
 }

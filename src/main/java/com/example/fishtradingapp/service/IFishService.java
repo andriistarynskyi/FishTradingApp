@@ -10,7 +10,7 @@ public interface IFishService {
 
     Fish findById(int id);
 
-    Map<String, Boolean> updateFish(int id, Fish fish);
+    Fish updateFish(int id, Fish fish);
 
     Map<String, Boolean> deleteFish(int id);
 

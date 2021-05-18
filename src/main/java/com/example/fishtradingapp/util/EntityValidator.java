@@ -1,11 +1,7 @@
-package com.example.fishtradingapp.utils;
+package com.example.fishtradingapp.util;
 
 import com.example.fishtradingapp.entity.Fish;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@AllArgsConstructor
 public class EntityValidator {
     public static boolean validateFishForNull(Fish fish) {
         return fish != null;

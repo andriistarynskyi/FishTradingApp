@@ -9,5 +9,4 @@ public class FishTradingAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(FishTradingAppApplication.class, args);
     }
-
 }
