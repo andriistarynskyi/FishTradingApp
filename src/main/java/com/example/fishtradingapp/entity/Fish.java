@@ -15,6 +15,8 @@ public class Fish {
     private String shortDescription;
     private String description;
     private String imageUrl;
+    @Nullable
+    private int quantity;
     @Column(name = "purchased_price")
     @Nullable
     private double purchasedPrice;

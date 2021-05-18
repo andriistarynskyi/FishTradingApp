@@ -3,11 +3,12 @@ package com.example.fishtradingapp.service;
 import com.example.fishtradingapp.entity.Fish;
 import com.example.fishtradingapp.exception.ResourceNotFoundException;
 import com.example.fishtradingapp.repository.IFishRepository;
+import com.example.fishtradingapp.utils.EntityValidator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,6 @@ import java.util.Map;
 @Service
 public class FishService implements IFishService {
     private final IFishRepository fishRepository;
-    private final ModelMapper modelMapper;
 
     @Override
     public List<Fish> findAll() {
@@ -31,13 +31,19 @@ public class FishService implements IFishService {
     }
 
     @Override
-    public Fish updateFish(int id, Fish fishDetails) {
-        Fish fish = findById(id);
-        fish.setImageUrl(fishDetails.getImageUrl());
-        fish.setShortDescription((fishDetails.getShortDescription()));
-        fish.setDescription(fishDetails.getDescription());
-        fishRepository.save(fish);
-        return fish;
+    public Map<String, Boolean> updateFish(int id, Fish fishDetails) {
+        Map<String, Boolean> response = new HashMap<>();
+        if (!EntityValidator.validateFishForNull(fishDetails)) {
+            Fish fish = findById(id);
+            fish.setImageUrl(fishDetails.getImageUrl());
+            fish.setShortDescription((fishDetails.getShortDescription()));
+            fish.setDescription(fishDetails.getDescription());
+            fishRepository.save(fish);
+            response.put("Update", Boolean.TRUE);
+        } else {
+            response.put("Update", Boolean.FALSE);
+        }
+        return response;
     }
 
     @Override
@@ -47,5 +53,11 @@ public class FishService implements IFishService {
         Map<String, Boolean> response = new HashMap();
         response.put("Deleted", Boolean.TRUE);
         return response;
+    }
+
+    @Override
+    @Transactional
+    public void save(Fish fish) {
+        fishRepository.save(fish);
     }
 }
