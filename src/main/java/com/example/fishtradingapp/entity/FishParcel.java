@@ -21,9 +21,11 @@ public class FishParcel {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
+    private boolean isApprovedByGM;
     private FishParcelStatus fishParcelStatus;
 
     public FishParcel() {
     }
+
+
 }

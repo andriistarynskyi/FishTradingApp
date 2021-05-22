@@ -36,7 +36,7 @@ public class FishService implements IFishService {
         fish.setImageUrl(fishDetails.getImageUrl());
         fish.setShortDescription((fishDetails.getShortDescription()));
         fish.setDescription(fishDetails.getDescription());
-        fishRepository.save(fish);
+        save(fish);
         return fish;
     }
 

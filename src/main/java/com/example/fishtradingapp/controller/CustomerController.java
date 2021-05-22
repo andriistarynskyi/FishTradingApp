@@ -2,7 +2,6 @@ package com.example.fishtradingapp.controller;
 
 import com.example.fishtradingapp.entity.Customer;
 import com.example.fishtradingapp.entity.dto.CustomerDTO;
-import com.example.fishtradingapp.entity.dto.FishDTO;
 import com.example.fishtradingapp.exception.ResourceNotFoundException;
 import com.example.fishtradingapp.service.ICustomerService;
 import lombok.AllArgsConstructor;
